@@ -10,8 +10,13 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/image-editor": "^2.3.0",
     "react": "17.0.2",
     "react-native": "0.68.2",
+    "react-native-auto-height-image": "^3.2.4",
+    "react-native-barcode-mask": "^1.2.4",
+    "react-native-camera-kit": "^13.0.0",
+    "react-native-fs": "^2.20.0",
     "react-native-vision-camera": "^2.15.4"
   },
   "devDependencies": {
