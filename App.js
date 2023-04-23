@@ -21,14 +21,15 @@ import titleImage from './images/What.png';
 import subImage from './images/Shoe.png';
 import shoesImage from './images/shoes.png';
 import SubInfo from './subInfo';
-import air from './images/air.png';
+import air from './images/converse2.png';
 import openURL from './openURL';
 import Loading from './Loading';
 
 function App() {
-  // const camera = useRef(null);
-  // const devices = useCameraDevices('wide-angle-camera');
-  // const device = devices.back;
+  const camera = useRef(null);
+  const devices = useCameraDevices('wide-angle-camera');
+  const device = devices.back;
+
   const [fadeAnimation, setFadeAnimation] = useState(new Animated.Value(0));
 
   const fadeIn = () => {
@@ -50,13 +51,13 @@ function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // useEffect(() => {
-  //   async function getPermission() {
-  //     const newCameraPermission = await Camera.requestCameraPermission();
-  //     console.log(newCameraPermission);
-  //   }
-  //   getPermission();
-  // }, []);
+  useEffect(() => {
+    async function getPermission() {
+      const newCameraPermission = await Camera.requestCameraPermission();
+      console.log(newCameraPermission);
+    }
+    getPermission();
+  }, []);
 
   useEffect(() => {
     if (isModalVisible == false) {
@@ -103,26 +104,26 @@ function App() {
     await RNFS.moveFile(data, `${RNFS.PicturesDirectoryPath}/${filename}`);
   }
 
-  // if (device == null) {
-  //   return <Text>Camera not available</Text>;
-  // }
+  if (device == null) {
+    return <Text>Camera not available</Text>;
+  }
 
   return (
     <View style={styles.container}>
       {showCamera ? (
         <>
-          {/* <Camera
+          <Camera
             ref={camera}
             style={StyleSheet.absoluteFill}
             device={device}
             isActive={showCamera}
             photo={true}
-          /> */}
+          />
           <BarcodeMask
             width={Dimensions.get('window').width * 0.95}
             height={Dimensions.get('window').width * 0.475}
             showAnimatedLine={false}
-            outerMaskOpacity={0.85}
+            outerMaskOpacity={0.75}
             edgeWidth="100%"
             edgeHeight="100%"
             edgeColor={'#FFFFFF'}
@@ -206,7 +207,7 @@ function App() {
         visible={isModalVisible}
         onRequestClose={() => {
           setIsModalVisible(false);
-          console.log('modal appearance');
+          setShowCamera(true);
         }}
         presentationStyle={'pageSheet'}>
         {open == false ? (
@@ -217,12 +218,12 @@ function App() {
               alignItems: 'center',
               opacity: fadeAnimation,
             }}>
-            {imageSource !== '' ? (
+            {/* {imageSource !== '' ? (
               <AutoHeightImage
                 width={Dimensions.get('window').width * 0.9}
                 source={{uri: imageSource}}
               />
-            ) : null}
+            ) : null} */}
             <View
               style={{
                 width: '90%',
@@ -234,9 +235,9 @@ function App() {
                   height: '30%',
                   marginTop: '10%',
                 }}>
-                <Text style={{fontSize: 25, fontWeight: '500'}}>나이키</Text>
+                <Text style={{fontSize: 25, fontWeight: '500'}}>CONVERSE</Text>
                 <Text style={{fontSize: 50, fontWeight: '900', marginTop: 5}}>
-                  에어포스
+                  척 70 빈티지
                 </Text>
               </View>
               <View
@@ -268,11 +269,11 @@ function App() {
                 marginTop: 20,
                 marginBottom: 20,
               }}></View>
-            <SubInfo title={'브랜드'} detail={'나이키'} />
-            <SubInfo title={'카테고리'} detail={'운동화'} />
-            <SubInfo title={'상품코드'} detail={'DV0788-100'} />
-            <SubInfo title={'색상'} detail={'흰색'} />
-            <SubInfo title={'가격'} detail={'₩ 139,000'} />
+            <SubInfo title={'브랜드'} detail={'CONVERSE'} />
+            <SubInfo title={'카테고리'} detail={'스니커즈'} />
+            <SubInfo title={'상품코드'} detail={'A00752C'} />
+            <SubInfo title={'색상'} detail={'청색'} />
+            <SubInfo title={'가격'} detail={'₩ 95,000'} />
             <View
               style={{
                 position: 'absolute',
@@ -303,7 +304,6 @@ function App() {
                   onPress={() => {
                     setShowCamera(true);
                     setIsModalVisible(false);
-                    fadeOut();
                   }}>
                   <Text
                     style={{
@@ -317,9 +317,7 @@ function App() {
                 <TouchableOpacity
                   style={[styles.button, {marginLeft: '1%'}]}
                   onPress={() =>
-                    openURL(
-                      'https://www.nike.com/kr/t/에어-포스-1-07-남성-신발-EJLt1dnh/DV0788-100?utm_source=Google&utm_medium=PS&utm_campaign=365DIGITAL_Google_SP_pMAX_all_all&utm_term=pMax.af1&cp=19808619078_sh_&gclid=Cj0KCQjwi46iBhDyARIsAE3nVrbls9h4XcUxGCU97ZY0FgsMYX0wEnIqOxt1JXa0gMmthtNrBROZqAwaAvEvEALw_wcB',
-                    )
+                    openURL('https://www.musinsa.com/app/goods/2628743')
                   }>
                   <Text
                     style={{
@@ -356,7 +354,7 @@ const styles = StyleSheet.create({
       (Dimensions.get('window').height / 2 -
         (Dimensions.get('window').width * 0.475) / 2) *
       0.75,
-    width: '45%',
+    width: '50%',
     position: 'absolute',
     backgroundColor: 'black',
     justifyContent: 'center',
@@ -364,6 +362,13 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 100,
     borderBottomLeftRadius: 100,
     top: 0,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 20,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
   },
   photobox: {
     height:

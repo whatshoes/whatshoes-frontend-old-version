@@ -15,7 +15,7 @@ function SubInfo({title, detail}) {
   return (
     <View
       style={{
-        width: '90%',
+        width: '85%',
         height: '7%',
         flexDirection: 'row',
         justifyContent: 'center',

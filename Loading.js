@@ -25,28 +25,21 @@ const Loading = ({setOpen, fadeIn}) => {
       }}>
       <Image
         source={Circle}
-        style={{position: 'absolute', width: 75, height: 75}}
+        style={{position: 'absolute', width: 65, height: 65}}
       />
       <Image
         source={Logo}
-        style={{position: 'absolute', width: 60, height: 40}}
-      />
-      <Image
-        source={require('./images/Eclipse.gif')}
-        style={{width: 115, height: 115, marginTop: -5}}
+        style={{position: 'absolute', width: 52, height: 32}}
       />
       <TouchableOpacity
         onPress={() => {
           setOpen(false);
           fadeIn();
-        }}
-        style={{
-          position: 'absolute',
-          bottom: 100,
-          fontSize: 16,
-          fontWeight: '500',
         }}>
-        <Text>로딩 종료</Text>
+        <Image
+          source={require('./images/Eclipse.gif')}
+          style={{width: 98, height: 98, marginTop: -4}}
+        />
       </TouchableOpacity>
     </View>
   );
