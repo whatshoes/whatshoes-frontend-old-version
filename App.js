@@ -24,6 +24,7 @@ import SubInfo from './subInfo';
 import air from './images/converse2.png';
 import openURL from './openURL';
 import Loading from './Loading';
+import axios from 'axios';
 
 function App() {
   const camera = useRef(null);
@@ -31,6 +32,7 @@ function App() {
   const device = devices.back;
 
   const [fadeAnimation, setFadeAnimation] = useState(new Animated.Value(0));
+  const [afterEncoding, setAfterEncoding] = useState();
 
   const fadeIn = () => {
     Animated.timing(fadeAnimation, {
@@ -50,6 +52,13 @@ function App() {
   const [imageSource, setImageSource] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [shoesName, setShoesName] = useState('');
+  const [shoesCode, setShoesCode] = useState('');
+  const [shoesBrand, setShoesBrand] = useState('');
+  const [shoesCategory, setShoesCategory] = useState('');
+  const [shoesColor, setShoesColor] = useState('');
+  const [shoesPrice, setShoesPrice] = useState('');
+  const [shoesURL, setShoesURL] = useState('');
 
   useEffect(() => {
     async function getPermission() {
@@ -91,6 +100,41 @@ function App() {
           ImageEditor.cropImage(photo.path, cropData).then(url => {
             setImageSource(url);
             savePhoto(url);
+            console.log('여기가 링크임', url);
+            fetch(url)
+              .then(response => response.blob())
+              .then(blob => {
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                  const base64data = reader.result;
+                  console.log('ㅎㅎㅎㅎ', base64data); // base64로 인코딩된 이미지 데이터 출력
+                  const regex =
+                    /data:image\/(?<extension>[\w]+);base64,(?<image>[\w+/=]+)/;
+                  const match = base64data.match(regex);
+                  const imageData = match.groups.image;
+                  console.log('여기에요 여기 !!!', imageData);
+
+                  axios
+                    .post('http://211.62.179.135:4000/fsl/test', {
+                      img: imageData,
+                    })
+                    .then(response => {
+                      console.log(response);
+                    })
+                    .catch(error => {
+                      console.error(error);
+                    });
+                };
+              });
+            // ImgToBase64.getBase64String(url) //is is where you put image url from the ImagePicker
+            //   .then(base64String => {
+            //     setAfterEncoding(base64String);
+            //     console.log('진입');
+            //     console.log(base64String);
+            //     console.log('성공했어요...', afterEncoding);
+            //   })
+            //   .catch(err => console.log('에러났어요...', err));
           });
         },
         error => {
@@ -99,7 +143,7 @@ function App() {
       );
     }
   }
-  async function savePhoto(data: string) {
+  async function savePhoto(data) {
     const filename = 'test.jpeg';
     await RNFS.moveFile(data, `${RNFS.PicturesDirectoryPath}/${filename}`);
   }
@@ -235,9 +279,11 @@ function App() {
                   height: '30%',
                   marginTop: '10%',
                 }}>
-                <Text style={{fontSize: 25, fontWeight: '500'}}>CONVERSE</Text>
+                <Text style={{fontSize: 25, fontWeight: '500'}}>
+                  {shoesBrand}
+                </Text>
                 <Text style={{fontSize: 50, fontWeight: '900', marginTop: 5}}>
-                  척 70 빈티지
+                  {shoesName}
                 </Text>
               </View>
               <View
@@ -269,11 +315,11 @@ function App() {
                 marginTop: 20,
                 marginBottom: 20,
               }}></View>
-            <SubInfo title={'브랜드'} detail={'CONVERSE'} />
-            <SubInfo title={'카테고리'} detail={'스니커즈'} />
-            <SubInfo title={'상품코드'} detail={'A00752C'} />
-            <SubInfo title={'색상'} detail={'청색'} />
-            <SubInfo title={'가격'} detail={'₩ 95,000'} />
+            <SubInfo title={'브랜드'} detail={shoesBrand} />
+            <SubInfo title={'카테고리'} detail={shoesCategory} />
+            <SubInfo title={'상품코드'} detail={shoesCode} />
+            <SubInfo title={'색상'} detail={shoesColor} />
+            <SubInfo title={'가격'} detail={shoesPrice} />
             <View
               style={{
                 position: 'absolute',
@@ -316,9 +362,7 @@ function App() {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, {marginLeft: '1%'}]}
-                  onPress={() =>
-                    openURL('https://www.musinsa.com/app/goods/2628743')
-                  }>
+                  onPress={() => openURL(shoesURL)}>
                   <Text
                     style={{
                       color: 'white',
