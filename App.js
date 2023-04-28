@@ -25,6 +25,16 @@ import air from './images/converse2.png';
 import openURL from './openURL';
 import Loading from './Loading';
 import axios from 'axios';
+import image1 from './images/shoes/1.jpg';
+import image2 from './images/shoes/2.jpg';
+import image3 from './images/shoes/3.jpg';
+import image4 from './images/shoes/4.jpg';
+import image5 from './images/shoes/5.jpg';
+import image6 from './images/shoes/6.jpg';
+import image7 from './images/shoes/7.jpg';
+import image8 from './images/shoes/8.jpg';
+import image9 from './images/shoes/9.jpg';
+import image10 from './images/shoes/10.jpg';
 
 function App() {
   const camera = useRef(null);
@@ -59,6 +69,7 @@ function App() {
   const [shoesColor, setShoesColor] = useState('');
   const [shoesPrice, setShoesPrice] = useState('');
   const [shoesURL, setShoesURL] = useState('');
+  const [shoesClass, setShoesClass] = useState('');
 
   useEffect(() => {
     async function getPermission() {
@@ -100,7 +111,6 @@ function App() {
           ImageEditor.cropImage(photo.path, cropData).then(url => {
             setImageSource(url);
             savePhoto(url);
-            console.log('여기가 링크임', url);
             fetch(url)
               .then(response => response.blob())
               .then(blob => {
@@ -108,19 +118,25 @@ function App() {
                 reader.readAsDataURL(blob);
                 reader.onloadend = () => {
                   const base64data = reader.result;
-                  console.log('ㅎㅎㅎㅎ', base64data); // base64로 인코딩된 이미지 데이터 출력
                   const regex =
                     /data:image\/(?<extension>[\w]+);base64,(?<image>[\w+/=]+)/;
                   const match = base64data.match(regex);
                   const imageData = match.groups.image;
-                  console.log('여기에요 여기 !!!', imageData);
-
                   axios
                     .post('http://211.62.179.135:4000/fsl/test', {
                       img: imageData,
                     })
                     .then(response => {
-                      console.log(response);
+                      setShoesName(response.data.name);
+                      setShoesBrand(response.data.brand);
+                      setShoesCategory(response.data.category);
+                      setShoesCode(response.data.productcode);
+                      setShoesColor(response.data.color);
+                      setShoesPrice(response.data.price);
+                      setShoesURL(response.data.url);
+                      setShoesClass(response.data.shoesclass);
+                      setOpen(false);
+                      fadeIn();
                     })
                     .catch(error => {
                       console.error(error);
@@ -300,10 +316,59 @@ function App() {
                     justifyContent: 'center',
                     alignItems: 'flex-end',
                   }}>
-                  <AutoHeightImage
-                    width={Dimensions.get('window').width * 0.7}
-                    source={air}
-                  />
+                  {shoesClass == '1' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image1}
+                    />
+                  ) : shoesClass == '2' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image2}
+                    />
+                  ) : shoesClass == '3' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image3}
+                    />
+                  ) : shoesClass == '4' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image4}
+                    />
+                  ) : shoesClass == '5' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image5}
+                    />
+                  ) : shoesClass == '6' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image6}
+                    />
+                  ) : shoesClass == '7' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image7}
+                    />
+                  ) : shoesClass == '8' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image8}
+                    />
+                  ) : shoesClass == '9' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image9}
+                    />
+                  ) : shoesClass == '10' ? (
+                    <AutoHeightImage
+                      width={Dimensions.get('window').width * 0.7}
+                      source={image10}
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </View>
               </View>
             </View>
